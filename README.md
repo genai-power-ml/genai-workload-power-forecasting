@@ -77,3 +77,24 @@ The dataset ZIP must be uploaded to `/content` before running notebook 01. The S
 - Power is predicted per execution (mean power), not as a time series.
 - Only 41 training executions exist, so training workloads are not modeled.
 
+## Future Work
+
+### Composition Aware Uncertainty Reservation for Concurrent GenAI Workload Scheduling
+
+The current scheduler uses a safety reserve based on the number of concurrently scheduled workloads. While this provides a simple buffer against prediction errors, it does not account for differences in workload composition.
+
+A future extension is to develop a **composition aware uncertainty reservation model** that dynamically predicts the required power safety margin based on the specific workloads scheduled together.
+
+Unlike a static lookup table or job count based reserve, the proposed model would consider:
+
+- **Workload composition:** The combination of workload types running concurrently.
+- **Configuration characteristics:** Batch size, request rate, output length, and other relevant workload parameters.
+- **Predicted power distribution:** Individual power estimates, prediction uncertainty, and variation across selected workloads.
+- **Concurrency effects:** How combined workload characteristics influence aggregate power prediction errors.
+
+The predicted uncertainty margin would be incorporated into the scheduler's admission decisions to reduce the risk of exceeding the available power budget while avoiding unnecessarily conservative reservations.
+
+**Preliminary simulation observations suggest** that composition aware reserves may provide better power budget protection than count only pooling while requiring comparable or less reserved headroom. These observations require further validation across diverse workload combinations and operating conditions.
+
+The long term objective is to develop and evaluate a **Composition Aware Uncertainty Reservation Model for Concurrent GenAI Workload Scheduling**, enabling more adaptive, reliable, and power efficient infrastructure capacity planning.
+
